@@ -47,7 +47,7 @@
         async function cargarPosts(pagina) {
             const grilla = document.getElementById('grilla-blog');
             const paginacion = document.getElementById('paginacion-blog');
-            const urlApi = `http://localhost:5000/api/blog?pagina=${pagina}&limite=9`;
+            const urlApi = `https://proyecto-arte-sol.vercel.app/api/blog?pagina=${pagina}&limite=9`;
 
             // Mostrar "Cargando..."
             grilla.innerHTML = '<p class="text-lg text-oscuro col-span-3 text-center">Cargando artículos...</p>';
