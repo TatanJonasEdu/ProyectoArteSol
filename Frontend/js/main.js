@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         
 
-        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=4';
+        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=3';
         productosGrilla.innerHTML = '<p class="col-span-4 text-center text-gray-600">Cargando productos...</p>';
 
         try {
