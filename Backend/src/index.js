@@ -15,6 +15,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../img', 'frontend')));
 
+// CORRECCIÓN DE CORS: Permitir cualquier origen (*) o específicamente el tuyo
+app.use(cors({
+    origin: '*', // OJO: Para producción es mejor poner tu dominio real, pero para probar usa '*'
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 //ruta para consumir la api cliente
 
 
