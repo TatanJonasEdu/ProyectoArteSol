@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         
 
-        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=3';
+        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=4';
         productosGrilla.innerHTML = '<p class="col-span-4 text-center text-gray-600">Cargando productos...</p>';
 
         try {
@@ -348,12 +348,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                     </a>
                     <div class="p-4 flex flex-col flex-grow">
                         <h3 class="font-bold text-lg mb-1 text-oscuro">${producto.nombre}</h3>
-                        <div class="flex items-center justify-between mb-3">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2 sm:gap-0">
                             <div class="flex text-sm">
                                 ${estrellasHtml}
                                 <span class="text-sm text-gray-500 ml-2">(${producto.totalResenas || 0})</span>
                             </div>
-                            <p class="text-3xl font-serif-delicado text-rosa-vibrante font-extrabold">${precioFormateado}</p>
+                            <p class="text-2xl sm:text-3xl font-serif-delicado text-rosa-vibrante font-extrabold">${precioFormateado}</p>
                         </div>
                         <div class="flex space-x-2 mt-auto">
                             <a href="producto-detalle.html?id=${producto._id}" class="flex-1 bg-lila-suave text-oscuro py-2 px-3 rounded-full text-center text-sm font-semibold 
@@ -570,9 +570,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                     </a>
                     <div class="p-4 flex flex-col flex-grow">
                         <h3 class="font-bold text-lg mb-1 text-oscuro">${producto.nombre}</h3>
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="flex text-sm">${estrellasHtml} <span class="text-sm text-gray-500 ml-2">(${producto.totalResenas || 0})</span></div>
-                            <p class="text-3xl font-serif-delicado text-rosa-vibrante font-extrabold">${precioFormateado}</p>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2 sm:gap-0">
+                            <div class="flex text-sm">
+                                ${estrellasHtml}
+                                <span class="text-sm text-gray-500 ml-2">(${producto.totalResenas || 0})</span>
+                            </div>
+                            <p class="text-2xl sm:text-3xl font-serif-delicado text-rosa-vibrante font-extrabold">${precioFormateado}</p>
                         </div>
                         <div class="flex space-x-2 mt-auto">
                             <a href="producto-detalle.html?id=${producto._id}" class="flex-1 bg-lila-suave text-oscuro py-2 px-3 rounded-full text-center text-sm font-semibold 
