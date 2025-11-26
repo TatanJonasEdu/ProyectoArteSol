@@ -136,7 +136,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         const productosGrilla = document.getElementById('productos-grilla');
         if (!productosGrilla) return; // Salir si no estamos en la página de tienda
 
-        let urlApi = 'http://localhost:5000/api/productos';
+        // CORRECCIÓN 1: URL ACTUALIZADA
+        let urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos';
+        
         const params = new URLSearchParams();
         if (filters.searchTerm) params.append('search', filters.searchTerm);
         if (filters.category) params.append('category', filters.category);
@@ -282,7 +284,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         const categoryFilter = document.getElementById('category-filter');
         if (!categoryFilter) return;
         try {
-            const response = await fetch('http://localhost:5000/api/productos/categorias-unicas');
+            // CORRECCIÓN 2: URL ACTUALIZADA
+            const response = await fetch('https://proyecto-arte-sol.vercel.app/api/productos/categorias-unicas');
             if (!response.ok) throw new Error('Respuesta no ok del backend');
             const categories = await response.json();
             categoryFilter.innerHTML = '<option value="">Todas</option>'; 
