@@ -1291,5 +1291,43 @@ document.addEventListener("DOMContentLoaded", async function() {
         inicializarFormularioContacto();
     }
 
+    // --- LÓGICA DEL MENÚ MÓVIL (RESPONSIVE) ---
+    // Esta función se ejecuta después de cargar el header dinámicamente
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    // Como el header se carga con fetch, a veces el botón aún no existe en el DOM inmediato.
+    // Usamos delegación de eventos en el documento para asegurar que funcione.
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('#mobile-menu-btn');
+        
+        if (btn) {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+                // Cambiar icono (Hamburguesa <-> X)
+                const icon = btn.querySelector('i');
+                if (menu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            }
+        } else {
+            // Cerrar menú si se hace clic fuera
+            const menu = document.getElementById('mobile-menu');
+            const isClickInsideMenu = e.target.closest('#mobile-menu');
+            
+            if (menu && !menu.classList.contains('hidden') && !isClickInsideMenu) {
+                menu.classList.add('hidden');
+                const btnIcon = document.getElementById('mobile-menu-btn').querySelector('i');
+                btnIcon.classList.remove('fa-times');
+                btnIcon.classList.add('fa-bars');
+            }
+        }
+    });
+
 
 }); // Cierre del DOMContentLoaded principal
