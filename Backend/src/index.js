@@ -33,7 +33,12 @@ app.get('/', (req,res) =>{
 });
 
 
-// ruta de nuestro servidor 
-app.listen(port, () =>{
-    console.log("el servidor esta conectado http://localhost:5000")
-});
+// Modificación para Vercel:
+if (process.env.NODE_ENV !== 'production') {
+    const port = process.env.PORT || 5000;
+    app.listen(port, () => {
+        console.log(`El servidor está conectado http://localhost:${port}`);
+    });
+}
+
+module.exports = app; // ¡Esto es lo más importante!
