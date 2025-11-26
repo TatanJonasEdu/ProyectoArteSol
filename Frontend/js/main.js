@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const productosGrilla = document.getElementById('productos-destacados-grilla');
         if (!productosGrilla) return;
 
-        const urlApi = 'http://localhost:5000/api/productos/aleatorios?cantidad=4';
+        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=4';
         productosGrilla.innerHTML = '<p class="col-span-4 text-center text-gray-600">Cargando productos...</p>';
 
         try {
@@ -406,7 +406,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
         
         setTimeout(async () => {
-            const urlApiProductos = 'http://localhost:5000/api/productos/aleatorios?cantidad=6';
+            const urlApiProductos = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=6';
             try {
                 const response = await fetch(urlApiProductos);
                 if (!response.ok) throw new Error('Error al cargar productos para el carrusel.');
@@ -471,7 +471,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             const productoId = urlParams.get('id');
             if (!productoId) throw new Error("No se especificó ID de producto.");
 
-            const response = await fetch(`http://localhost:5000/api/productos/${productoId}`);
+            const response = await fetch(`https://proyecto-arte-sol.vercel.app/api/productos/${productoId}`);
             if (!response.ok) throw new Error("Producto no encontrado.");
             const producto = await response.json();
             if (!producto || producto.activo === false) throw new Error("Producto no disponible.");
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (!relacionadosGrilla) return;
 
         relacionadosGrilla.innerHTML = '<p class="col-span-4 text-center text-gray-600">Cargando productos...</p>';
-        const urlApi = `http://localhost:5000/api/productos?category=${encodeURIComponent(categoria)}&limit=5`;
+        const urlApi = `https://proyecto-arte-sol.vercel.app/api/productos?category=${encodeURIComponent(categoria)}&limit=5`;
 
         try {
             const response = await fetch(urlApi);
@@ -736,7 +736,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const carrito = getCarrito();
         
         try {
-            const response = await fetch('http://localhost:5000/api/envio/generar', {
+            const response = await fetch('https://proyecto-arte-sol.vercel.app/api/envio/generar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -788,7 +788,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         tiempoEl.innerHTML = '...'; 
 
         try {
-            const response = await fetch('http://localhost:5000/api/envio/cotizar', {
+            const response = await fetch('https://proyecto-arte-sol.vercel.app/api/envio/cotizar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ciudad: ciudad })
@@ -1027,7 +1027,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const reseñasGrilla = document.getElementById('reseñas-grilla');
         if (!reseñasGrilla) return; 
         
-        const urlApi = 'http://localhost:5000/api/resenas/aleatorias?cantidad=3';
+        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/resenas/aleatorias?cantidad=3';
         reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Cargando opiniones...</p>';
 
         try {
@@ -1070,7 +1070,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const grilla = document.getElementById('grilla-blog-inicio'); 
         if (!grilla) return; 
         
-        const urlApi = 'http://localhost:5000/api/blog/aleatorios?cantidad=3';
+        const urlApi = 'https://proyecto-arte-sol.vercel.app/api/blog/aleatorios?cantidad=3';
         grilla.innerHTML = '<p class="text-lg text-oscuro col-span-3 text-center">Cargando inspiración...</p>';
 
         try {
@@ -1127,7 +1127,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             };
 
             try {
-                const response = await fetch('http://localhost:5000/api/contacto', {
+                const response = await fetch('https://proyecto-arte-sol.vercel.app/api/contacto', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosFormulario)
