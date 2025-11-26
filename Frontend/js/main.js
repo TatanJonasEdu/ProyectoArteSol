@@ -299,7 +299,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         } catch (error) {
             console.error("Error al poblar las categorías:", error); 
         }
+        
+        
     }
+
+    
 
     // --- ======================================================= ---
     // --- 4. DEFINICIÓN DE LÓGICA: INICIO (index.html) ---
@@ -309,6 +313,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     async function cargarProductosAleatoriosGrilla() {
         const productosGrilla = document.getElementById('productos-destacados-grilla');
         if (!productosGrilla) return;
+
+        
 
         const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=4';
         productosGrilla.innerHTML = '<p class="col-span-4 text-center text-gray-600">Cargando productos...</p>';
@@ -1169,6 +1175,24 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Lógica Tienda
     const productosGrillaElem = document.getElementById('productos-grilla');
     if (productosGrillaElem) {
+
+       const toggleFilterBtn = document.getElementById('toggle-filter-btn');
+        const filtrosTienda = document.getElementById('filtros-tienda');
+
+        if (toggleFilterBtn && filtrosTienda) {
+            toggleFilterBtn.addEventListener('click', () => {
+                // 1. Alternar la clase 'open' que controla la visibilidad en CSS
+                filtrosTienda.classList.toggle('open');
+                
+                // 2. Cambiar el texto del botón dinámicamente
+                const isOpen = filtrosTienda.classList.contains('open');
+                const btnText = toggleFilterBtn.querySelector('span');
+                if (btnText) {
+                    btnText.textContent = isOpen ? 'Ocultar Filtros' : 'Mostrar Filtros';
+                }
+            });
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const initialFilters = {
             searchTerm: urlParams.get('search') || '',
