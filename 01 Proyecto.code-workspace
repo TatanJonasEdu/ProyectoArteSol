@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../11-Lanbide/01-CS100/01 Html y css/01 Proyecto"
+		},
+		{
+			"path": "Frontend"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Frontend"
+	}
+}

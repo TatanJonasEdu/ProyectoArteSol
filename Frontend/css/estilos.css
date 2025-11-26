@@ -1,0 +1,29 @@
+/* Definición de colores */
+        :root {
+            --color-fondo-principal: #FCE4EC;
+            --color-rosa-vibrante: #E91E63;
+            --color-lila-suave: #D1C4E9;
+            --color-verde-menta: #A8DCD9;
+            --color-texto-oscuro: #424242;
+            --color-bordes-suaves: #E0E0E0;
+            --color-secundario-botones: #7B8FA8;
+            --color-fondo-footer-oscuro: #252525;
+        }
+
+        /* Clases de utilidad de colores */
+        .bg-principal-rosa { background-color: var(--color-fondo-principal); }
+        .text-rosa-vibrante { color: var(--color-rosa-vibrante); }
+        .bg-lila-suave { background-color: var(--color-lila-suave); }
+        .text-lila-suave { color: var(--color-lila-suave); }
+        .bg-verde-menta { background-color: var(--color-verde-menta); }
+        .text-verde-menta { color: var(--color-verde-menta); }
+        .text-oscuro { color: var(--color-texto-oscuro); }
+        .border-suave { border-color: var(--color-bordes-suaves); }
+        .bg-secundario-botones { background-color: var(--color-secundario-botones); }
+        .hover\:bg-secundario-botones-oscuro:hover { background-color: #617387; }
+        .bg-footer-dark { background-color: var(--color-fondo-footer-oscuro); }
+
+        /* Fuentes */
+        .font-serif-delicado { font-family: 'Playfair Display', 'Garamond', serif; }
+        .font-sans-legible { font-family: 'Open Sans', 'Lato', sans-serif; }
+    

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opiniones de Clientes - Artesol</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="css/estilos.css" rel="stylesheet">
+</head>
+<body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased">
+
+    <div id="app-header"></div> <main class="container mx-auto px-4 py-8 pt-24">
+        
+        <section class="bg-white p-8 md:p-12 rounded-2xl shadow-xl mb-16 max-w-7xl mx-auto">
+            <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-8 text-center">Todas las Opiniones de Nuestros Clientes</h1>
+            <p class="text-lg text-gray-700 text-center mb-10">
+                Lee lo que nuestros clientes satisfechos tienen que decir sobre sus productos de Artesol.
+            </p>
+
+            <div id="todas-las-resenas-grilla" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <p class="col-span-3 text-center text-gray-600">Cargando todas las opiniones...</p>
+            </div>
+            
+        </section>
+
+    </main>
+
+    <div id="app-footer"></div> <script src="js/main.js"></script> <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarTodasLasResenas(); // ¡Llamada a la función renombrada!
+        });
+
+        async function cargarTodasLasResenas() { // ¡Función renombrada!
+            const reseñasGrilla = document.getElementById('todas-las-resenas-grilla'); // ¡ID renombrado!
+            const urlApi = 'http://localhost:5000/api/resenas/todas'; // ¡URL con 'resenas'!
+
+            reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Cargando todas las opiniones...</p>';
+
+            try {
+                const response = await fetch(urlApi);
+                if (!response.ok) throw new Error('Error al cargar todas las reseñas.');
+                
+                const reseñas = await response.json();
+                
+                reseñasGrilla.innerHTML = ''; 
+
+                if (reseñas.length === 0) {
+                    reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Aún no hay opiniones de clientes para mostrar.</p>';
+                    return;
+                }
+
+                reseñas.forEach(reseña => {
+                    const estrellasHtml = '<span class="text-yellow-400">★</span>'.repeat(reseña.calificacion) + 
+                                          '<span class="text-gray-300">★</span>'.repeat(5 - reseña.calificacion);
+                    
+                    const nombreProducto = reseña.productoId ? reseña.productoId.nombre : 'Producto Desconocido';
+                    const imagenProducto = reseña.productoId ? reseña.productoId.imagenUrl : 'https://via.placeholder.com/60x60?text=Prod';
+
+                    const reseñaHtml = `
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col justify-between h-full">
+                        <div>
+                            <div class="flex items-center mb-3">
+                                <div>
+                                    <p class="font-bold text-oscuro">${reseña.nombreCliente}</p>
+                                    <div class="flex text-lg">${estrellasHtml}</div>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 italic mb-4">"${reseña.comentario}"</p>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <img src="${imagenProducto}" alt="${nombreProducto}" class="w-10 h-10 object-cover rounded-full mr-2">
+                                Comentario sobre: <span class="font-semibold ml-1">${nombreProducto}</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4 text-right">${new Date(reseña.fechaResena).toLocaleDateString('es-CO')}</p>
+                    </div>
+                    `;
+                    reseñasGrilla.insertAdjacentHTML('beforeend', reseñaHtml);
+                });
+
+            } catch (error) {
+                console.error('Error al cargar todas las reseñas:', error);
+                reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-red-500">Error al cargar opiniones. Intenta de nuevo más tarde.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

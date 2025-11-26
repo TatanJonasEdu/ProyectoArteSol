@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Pedido Confirmado! - Artesol</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="css/estilos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased pt-20">
+
+    <!-- Contenedor para la cabecera -->
+    <div id="app-header"></div>
+
+    <!-- Contenido Principal de la Página -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-xl text-center">
+            
+            <!-- Icono de éxito -->
+            <i class="fas fa-check-circle text-verde-menta text-6xl mb-6"></i>
+            
+            <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-4">¡Gracias por tu compra!</h1>
+            
+            <p class="text-lg text-gray-700 mb-8">
+                Hemos recibido tu pedido. En breve te contactaremos por WhatsApp y correo electrónico con los detalles de pago y envío.
+            </p>
+
+            <!-- Contenedor para el número de guía -->
+            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <h3 class="text-xl font-semibold text-oscuro mb-2">Número de Guía (Simulado)</h3>
+                <p id="numero-guia" class="text-2xl font-bold text-secundario-botones bg-white p-3 rounded-lg inline-block border border-dashed border-gray-300">
+                    Cargando...
+                </p>
+            </div>
+
+            <a href="tienda.html" class="inline-block bg-secundario-botones text-white py-3 px-8 rounded-full text-lg font-bold hover:bg-pink-700 transition duration-300 mt-10">
+                Seguir Comprando
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- Contenedor para el pie de página -->
+    <div id="app-footer"></div>
+    
+    <!-- main.js se encargará de buscar el ID 'numero-guia' y rellenarlo -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

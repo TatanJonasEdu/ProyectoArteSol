@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Blog - Artesol</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="css/estilos.css" rel="stylesheet">
+</head>
+<body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased">
+
+    <div id="app-header"></div>
+
+    <main class="container mx-auto px-4 py-8 pt-24">
+        
+        <section class="bg-white p-8 md:p-12 rounded-2xl shadow-xl mb-16">
+            <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-10 text-center">Nuestro Blog Artesanal</h1>
+
+            <div id="grilla-blog" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <p class="text-lg text-oscuro col-span-3 text-center">Cargando artículos...</p>
+            </div>
+
+            <div id="paginacion-blog" class="flex justify-center items-center space-x-4 mt-12">
+                </div>
+
+        </section>
+
+    </main>
+
+    <div id="app-footer"></div>
+
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Función principal que se ejecuta al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtenemos el parámetro 'pagina' de la URL (ej: blog.html?pagina=2)
+            const params = new URLSearchParams(window.location.search);
+            const paginaActual = parseInt(params.get('pagina')) || 1;
+            
+            cargarPosts(paginaActual);
+        });
+
+        // --- FUNCIÓN PARA CARGAR LOS POSTS DE LA API ---
+        async function cargarPosts(pagina) {
+            const grilla = document.getElementById('grilla-blog');
+            const paginacion = document.getElementById('paginacion-blog');
+            const urlApi = `http://localhost:5000/api/blog?pagina=${pagina}&limite=9`;
+
+            // Mostrar "Cargando..."
+            grilla.innerHTML = '<p class="text-lg text-oscuro col-span-3 text-center">Cargando artículos...</p>';
+            paginacion.innerHTML = '';
+
+            try {
+                const response = await fetch(urlApi);
+                if (!response.ok) throw new Error('Error al cargar los posts.');
+                
+                const data = await response.json();
+                
+                // data = { posts: [...], totalPaginas: 3, paginaActual: 1 }
+
+                // Dibujar la grilla de posts
+                dibujarGrilla(data.posts, grilla);
+                
+                // Dibujar los botones de paginación
+                dibujarPaginacion(data.totalPaginas, data.paginaActual, paginacion);
+
+            } catch (error) {
+                console.error('Error:', error);
+                grilla.innerHTML = '<p class="text-lg text-red-500 col-span-3 text-center">Error al cargar los artículos.</p>';
+            }
+        }
+
+        // --- FUNCIÓN PARA "DIBUJAR" LOS POSTS EN EL HTML ---
+        function dibujarGrilla(posts, grilla) {
+    grilla.innerHTML = ''; // Limpiar la grilla
+
+    if (posts.length === 0) {
+        grilla.innerHTML = '<p class="text-lg text-oscuro col-span-3 text-center">No hay artículos en el blog por el momento.</p>';
+        return;
+    }
+
+    posts.forEach(post => {
+        const fecha = new Date(post.fechaPublicacion).toLocaleDateString('es-CO', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // ----- ¡AQUÍ ESTÁ EL CAMBIO! -----
+        // Los enlaces 'href' ahora apuntan a: `post.html?id=${post._id}`
+        // Usamos post._id (que es el ID que nos da MongoDB)
+        
+        const postHtml = `
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+            <a href="post.html?id=${post._id}"> 
+                <img src="${post.bannerUrl}" alt="${post.titulo}" class="w-full h-56 object-cover">
+            </a>
+            <div class="p-6 flex flex-col flex-grow">
+                <span class="text-sm text-gray-500 mb-2">${fecha}</span>
+                <h3 class="text-2xl font-serif-delicado text-oscuro mb-3">${post.titulo}</h3>
+                <p class="text-gray-700 mb-5 flex-grow">${post.contenido.substring(0, 100)}...</p>
+                <a href="post.html?id=${post._id}" class="text-verde-menta hover:underline font-bold text-lg mt-auto">Leer más &rarr;</a>
+            </div>
+        </article>
+        `;
+        grilla.insertAdjacentHTML('beforeend', postHtml);
+    });
+}
+
+        // --- FUNCIÓN PARA "DIBUJAR" LA PAGINACIÓN ---
+        function dibujarPaginacion(totalPaginas, paginaActual, paginacion) {
+            paginacion.innerHTML = ''; // Limpiar
+
+            // --- Botón "Anterior" ---
+            if (paginaActual > 1) {
+                // Usamos <a> en lugar de <button> para que el enlace cambie la URL
+                const prevLink = `<a href="blog.html?pagina=${paginaActual - 1}" class="py-2 px-4 bg-gray-200 rounded-lg text-oscuro font-bold hover:bg-lila-suave">&laquo; Anterior</a>`;
+                paginacion.insertAdjacentHTML('beforeend', prevLink);
+            }
+
+            // --- Botones de Números ---
+            for (let i = 1; i <= totalPaginas; i++) {
+                let claseBoton = "py-2 px-4 rounded-lg text-oscuro font-bold";
+                if (i === paginaActual) {
+                    claseBoton += " bg-rosa-vibrante text-white"; // Página activa
+                } else {
+                    claseBoton += " bg-gray-200 hover:bg-lila-suave"; // Otras páginas
+                }
+                
+                const pageLink = `<a href="blog.html?pagina=${i}" class="${claseBoton}">${i}</a>`;
+                paginacion.insertAdjacentHTML('beforeend', pageLink);
+            }
+
+            // --- Botón "Siguiente" ---
+            if (paginaActual < totalPaginas) {
+                const nextLink = `<a href="blog.html?pagina=${paginaActual + 1}" class="py-2 px-4 bg-gray-200 rounded-lg text-oscuro font-bold hover:bg-lila-suave">Siguiente &raquo;</a>`;
+                paginacion.insertAdjacentHTML('beforeend', nextLink);
+            }
+        }
+    </script>
+</body>
+</html>

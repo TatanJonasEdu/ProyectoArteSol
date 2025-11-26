@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - Artesol</title>
+    <!-- Añadimos el plugin de 'forms' para que los inputs del formulario se vean mejor -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography,forms"></script> 
+    <link href="css/estilos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- ¡Script de ePayco! -->
+    <script src="https://checkout.epayco.co/checkout.js"></script>
+
+</head>
+<body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased pt-20">
+
+    <!-- Contenedor para la cabecera -->
+    <div id="app-header"></div>
+
+    <!-- Contenido Principal de la Página -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-8 text-center">Finalizar Compra</h1>
+
+        <!-- Mensaje de Carrito Vacío (manejado por JS) -->
+        <div id="checkout-vacio" class="hidden text-center bg-white p-12 rounded-2xl shadow-xl">
+            <h2 class="text-3xl font-semibold text-oscuro mb-4">Tu carrito está vacío</h2>
+            <p class="text-gray-700 mb-8">No puedes finalizar una compra sin productos.</p>
+            <a href="tienda.html" class="inline-block bg-secundario-botones text-white py-3 px-8 rounded-full text-lg font-bold hover:bg-pink-700 transition duration-300">
+                Volver a la Tienda
+            </a>
+        </div>
+
+        <!-- Contenedor principal del checkout -->
+        <div id="checkout-container" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+            <!-- Columna Izquierda: Formulario de Envío -->
+            <section class="lg:col-span-2 bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+                
+                <h2 class="text-3xl font-serif-delicado text-oscuro mb-6">1. Información de Envío</h2>
+                
+                <!-- Formulario -->
+                <form id="checkout-form" class="space-y-6">
+                    
+                    <!-- Campo Nombre -->
+                    <div>
+                        <label for="checkout-nombre" class="block text-sm font-bold text-gray-700 mb-2">Nombre Completo</label>
+                        <input type="text" id="checkout-nombre" name="nombre" required 
+                               class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante">
+                    </div>
+                    <!-- Campo Email -->
+                    <div>
+                        <label for="checkout-email" class="block text-sm font-bold text-gray-700 mb-2">Correo Electrónico</label>
+                        <input type="email" id="checkout-email" name="email" required
+                               class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante">
+                    </div>
+                    <!-- Campo Teléfono -->
+                    <div>
+                        <label for="checkout-telefono" class="block text-sm font-bold text-gray-700 mb-2">Teléfono (WhatsApp)</label>
+                        <input type="tel" id="checkout-telefono" name="telefono" required
+                               class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante">
+                    </div>
+                    <!-- Campo Dirección -->
+                    <div>
+                        <label for="checkout-direccion" class="block text-sm font-bold text-gray-700 mb-2">Dirección de Envío</label>
+                        <input type="text" id="checkout-direccion" name="direccion" required
+                               class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante">
+                    </div>
+                    <!-- Campos Departamento y Ciudad -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="checkout-departamento" class="block text-sm font-bold text-gray-700 mb-2">Departamento</label>
+                            <select id="checkout-departamento" name="departamento" required
+                                   class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante">
+                                <option value="" disabled selected>Selecciona un departamento</option>
+                                <option value="Amazonas">Amazonas</option>
+                                <option value="Antioquia">Antioquia</option>
+                                <option value="Arauca">Arauca</option>
+                                <option value="Atlántico">Atlántico</option>
+                                <option value="Bogotá D.C.">Bogotá D.C.</option>
+                                <option value="Bolívar">Bolívar</option>
+                                <option value="Boyacá">Boyacá</option>
+                                <option value="Caldas">Caldas</option>
+                                <option value="Caquetá">Caquetá</option>
+                                <option value="Casanare">Casanare</option>
+                                <option value="Cauca">Cauca</option>
+                                <option value="Cesar">Cesar</option>
+                                <option value="Chocó">Chocó</option>
+                                <option value="Córdoba">Córdoba</option>
+                                <option value="Cundinamarca">Cundinamarca</option>
+                                <option value="Guainía">Guainía</option>
+                                <option value="Guaviare">Guaviare</option>
+                                <option value="Huila">Huila</option>
+                                <option value="La Guajira">La Guajira</option>
+                                <option value="Magdalena">Magdalena</option>
+                                <option value="Meta">Meta</option>
+                                <option value="Nariño">Nariño</option>
+                                <option value="Norte de Santander">Norte de Santander</option>
+                                <option value="Putumayo">Putumayo</option>
+                                <option value="Quindío">Quindío</option>
+                                <option value="Risaralda">Risaralda</option>
+                                <option value="San Andrés y Providencia">San Andrés y Providencia</option>
+                                <option value="Santander">Santander</option>
+                                <option value="Sucre">Sucre</option>
+                                <option value="Tolima">Tolima</option>
+                                <option value="Valle del Cauca">Valle del Cauca</option>
+                                <option value="Vaupés">Vaupés</option>
+                                <option value="Vichada">Vichada</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="checkout-ciudad" class="block text-sm font-bold text-gray-700 mb-2">Ciudad / Municipio</label>
+                            <input type="text" id="checkout-ciudad" name="ciudad" required
+                                   class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante">
+                        </div>
+                    </div>
+                    <!-- Campo Notas -->
+                    <div>
+                        <label for="checkout-notas" class="block text-sm font-bold text-gray-700 mb-2">Notas Adicionales (Opcional)</label>
+                        <textarea id="checkout-notas" name="notas" rows="3"
+                                  class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rosa-vibrante"></textarea>
+                    </div>
+
+                    <hr class="my-6 border-gray-200">
+
+                    <h2 class="text-3xl font-serif-delicado text-oscuro mb-6">2. Método de Pago</h2>
+                    
+                    <!-- ¡TEXTO ACTUALIZADO AQUÍ! -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <input type="radio" id="pago-epayco" name="metodo-pago" value="epayco" class="text-rosa-vibrante focus:ring-rosa-vibrante" checked>
+                        <label for="pago-epayco" class="ml-3 font-semibold text-gray-700">
+                            Pagar con ePayco (Tarjetas, PSE, Efecty)
+                        </label>
+                        <p class="text-sm text-gray-600 mt-2 ml-7">
+                            Serás redirigido a la pasarela de pago segura de ePayco al hacer clic en "Pagar Ahora".
+                        </p>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- Columna Derecha: Resumen del Pedido -->
+            <aside class="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-xl sticky top-28">
+                <h2 class="text-3xl font-serif-delicado text-oscuro mb-6 pb-4 border-b border-gray-200">
+                    Tu Pedido
+                </h2>
+                
+                <div id="checkout-lista-productos" class="max-h-64 overflow-y-auto space-y-4 pr-2">
+                    <p id="checkout-cargando" class="text-center text-gray-600">
+                        Cargando resumen...
+                    </p>
+                    <!-- JS generará aquí los items -->
+                </div>
+
+                <hr class="my-6 border-gray-200">
+
+                <!-- Totales -->
+                <div class="space-y-4 text-lg">
+                    <div class="flex justify-between text-gray-700">
+                        <span>Subtotal</span>
+                        <span id="checkout-subtotal" class="font-semibold text-oscuro">$0</span>
+                    </div>
+                    <div class="flex justify-between text-gray-700">
+                        <span>Envío</span>
+                        <span id="checkout-envio" class="font-semibold text-oscuro">
+                            ...
+                        </span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-500 -mt-3">
+                        <span>Entrega estimada</span>
+                        <span id="checkout-tiempo" class="font-semibold">...</span>
+                    </div>
+                </div>
+
+                <hr class="my-6 border-gray-200">
+
+                <div class="flex justify-between text-2xl font-bold text-oscuro">
+                    <span>Total</span>
+                    <span id="checkout-total">$0</span>
+                </div>
+
+                <div id="checkout-error-msg" class="text-red-600 text-sm font-semibold text-center mt-4"></div>
+
+                <!-- Botón de Pagar (type="button") -->
+                <button type="button" id="finalizar-pedido-btn" 
+                        class="w-full bg-verde-menta text-white py-4 px-6 rounded-lg shadow-md text-lg font-semibold 
+                               hover:bg-verde-oscuro transition duration-300 flex items-center justify-center mt-8 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-lock mr-2"></i>
+                    Pagar Ahora
+                </button>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Contenedor para el pie de página -->
+    <div id="app-footer"></div>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

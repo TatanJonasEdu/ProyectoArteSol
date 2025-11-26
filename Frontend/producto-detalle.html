@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando producto... - Tienda Artesol</title> 
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="css/estilos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased pt-20">
+
+    <div id="app-header"></div>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="mb-6">
+            <a href="tienda.html" class="text-secundario-botones hover:underline transition-colors duration-300">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Volver a la Tienda
+            </a>
+        </div>
+
+        <div id="mensaje-container" class="text-center my-12 p-8 bg-white rounded-2xl shadow-xl">
+            <p id="mensaje-texto" class="text-lg text-gray-700">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                Cargando detalles del producto...
+            </p>
+        </div>
+
+        <section id="detalle-producto-container" class="hidden bg-white p-8 md:p-12 rounded-2xl shadow-xl">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                
+                <div>
+                    <img id="producto-imagen" 
+                         src="img/placeholder-producto.png" 
+                         alt="Cargando imagen del producto" 
+                         class="w-full h-auto rounded-lg shadow-lg object-cover aspect-square">
+                    </div>
+
+                <div class="flex flex-col justify-center">
+                    
+                    <h1 id="producto-nombre" class="text-4xl font-serif-delicado text-rosa-vibrante mb-4">
+                        Nombre del Producto
+                    </h1>
+                    
+                    <div id="producto-calificacion-wrapper" class="flex items-center text-gray-600 mb-4">
+                        <span id="producto-calificacion-estrellas" class="text-yellow-400 text-xl"></span>
+                        <span id="producto-calificacion-texto" class="ml-2 text-sm"></span>
+                    </div>
+
+                    <span id="producto-precio" class="text-4xl font-bold text-oscuro mb-6 block">
+                        $0
+                    </span>
+
+                    <div class="flex flex-col gap-3">
+                         <button id="add-to-cart-btn" class="bg-secundario-botones text-white w-full py-3 px-6 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 text-lg font-semibold flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i>
+                            Añadir al Carrito
+                        </button>
+                    </div>
+
+                    <div class="mt-8">
+                        <h2 class="text-xl font-semibold mb-2">Descripción</h2>
+                        <p id="producto-descripcion" class="text-gray-700 leading-relaxed prose">
+                            Descripción detallada del producto...
+                        </p>
+                    </div>
+
+                </div>
+            </div> <hr class="my-12 border-gray-200">
+
+            <div id="seccion-resenas">
+                <h2 class="text-3xl font-serif-delicado text-rosa-vibrante mb-6">Opiniones de Clientes</h2>
+                <div id="resenas-lista" class="space-y-4">
+                    <p class="text-gray-600">No hay reseñas para este producto todavía.</p>
+                    </div>
+            </div>
+
+            <div id="seccion-relacionados" class="mt-16">
+                <h2 class="text-3xl font-serif-delicado text-rosa-vibrante mb-8 text-center">También te podría interesar</h2>
+                <div id="relacionados-grilla" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="app-footer"></div>
+
+    <script src="js/main.js"></script>
+
+</body>
+</html>

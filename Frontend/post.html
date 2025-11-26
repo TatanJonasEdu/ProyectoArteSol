@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargando... - Artesol</title> 
+    
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="css/estilos.css" rel="stylesheet">
+</head>
+<body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased">
+
+    <div id="app-header"></div>
+
+    <main class="container mx-auto px-4 py-8 pt-24">
+        
+        <article id="post-contenido" class="bg-white p-6 md:p-12 rounded-2xl shadow-xl mb-16 max-w-5xl mx-auto">
+            
+            <p class="text-lg text-oscuro text-center">Cargando artículo...</p>
+
+        </article>
+
+    </main>
+
+    <div id="app-footer"></div>
+
+    <script src="js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarPostIndividual();
+        });
+
+        async function cargarPostIndividual() {
+            const postContenedor = document.getElementById('post-contenido');
+
+            try {
+                // 1. Obtener el ID de la URL (ej: post.html?id=12345)
+                const params = new URLSearchParams(window.location.search);
+                const postId = params.get('id');
+
+                if (!postId) {
+                    throw new Error('No se especificó un ID de post.');
+                }
+
+                // 2. Llamar a la nueva API del backend
+                const urlApi = `http://localhost:5000/api/blog/${postId}`;
+                const response = await fetch(urlApi);
+
+                if (!response.ok) {
+                    throw new Error('Post no encontrado.');
+                }
+
+                const post = await response.json();
+
+                // 3. "Pintar" el HTML del post
+                
+                // Actualizar el título de la página
+                document.title = `${post.titulo} - Artesol`;
+
+                // Formatear la fecha
+                const fecha = new Date(post.fechaPublicacion).toLocaleDateString('es-CO', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                const postHtml = `
+                    <div class="mb-8 text-center">
+                        <h1 class="text-4xl lg:text-5xl font-serif-delicado text-rosa-vibrante mb-4 leading-tight">${post.titulo}</h1>
+                        <span class="text-lg text-gray-600">Publicado por ${post.autor} el ${fecha}</span>
+                    </div>
+
+                    <div class="w-full h-64 md:h-96 rounded-2xl shadow-lg overflow-hidden mb-10">
+                        <img src="${post.bannerUrl}" alt="Banner del artículo" class="w-full h-full object-cover">
+                    </div>
+
+                    <div class="prose max-w-none text-oscuro text-lg leading-relaxed">
+                     <p>${post.contenido.replace(/\\n\\n/g, '</p><p>')}</p>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <a href="blog.html" class="inline-block bg-secundario-botones text-white py-3 px-8 rounded-full text-lg font-bold hover:bg-secundario-botones-oscuro transition duration-300 shadow-lg">
+                            &larr; Volver al Blog
+                        </a>
+                    </div>
+                `;
+
+                // 4. Reemplazar el "Cargando..."
+                postContenedor.innerHTML = postHtml;
+
+            } catch (error) {
+                console.error('Error:', error);
+                postContenedor.innerHTML = '<p class="text-lg text-red-500 text-center">Error: Post no encontrado o inválido.</p>';
+            }
+        }
+    </script>
+
+</body>
+</html>
