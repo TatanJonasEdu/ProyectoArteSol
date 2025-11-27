@@ -10,15 +10,14 @@
 </head>
 <body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased pt-20">
 
-    <!-- Contenedor para la cabecera -->
+    <!-- Yo renderizo la cabecera -->
     <div id="app-header"></div>
 
-    <!-- Contenido Principal de la Página -->
     <main class="container mx-auto px-4 py-8">
         
         <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-xl text-center">
             
-            <!-- Icono de éxito -->
+            <!-- Yo muestro icono de éxito -->
             <i class="fas fa-check-circle text-verde-menta text-6xl mb-6"></i>
             
             <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-4">¡Gracias por tu compra!</h1>
@@ -27,9 +26,9 @@
                 Hemos recibido tu pedido. En breve te contactaremos por WhatsApp y correo electrónico con los detalles de pago y envío.
             </p>
 
-            <!-- Contenedor para el número de guía -->
             <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
                 <h3 class="text-xl font-semibold text-oscuro mb-2">Número de Guía (Simulado)</h3>
+                <!-- Yo relleno el número de guía desde el script -->
                 <p id="numero-guia" class="text-2xl font-bold text-secundario-botones bg-white p-3 rounded-lg inline-block border border-dashed border-gray-300">
                     Cargando...
                 </p>
@@ -43,10 +42,10 @@
 
     </main>
 
-    <!-- Contenedor para el pie de página -->
+    <!-- Yo renderizo el pie de página -->
     <div id="app-footer"></div>
     
-    <!-- main.js se encargará de buscar el ID 'numero-guia' y rellenarlo -->
+    <!-- Yo uso main.js para rellenar 'numero-guia' -->
     <script src="js/main.js"></script>
 
 </body>

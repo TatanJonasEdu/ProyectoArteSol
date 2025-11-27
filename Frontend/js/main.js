@@ -2,23 +2,16 @@
 
 document.addEventListener("DOMContentLoaded", async function() {
     
-    // --- ======================================================= ---
-    // --- 0. ¡CONFIGURACIÓN EPAYCO! ---
-    // --- Llaves de prueba de ePayco ---
-    // --- ======================================================= ---
+    // Yo configuro ePayco (modo prueba)
     const EPAYCO_P_KEY = "733b8ceb8f1890ea3cd569b172eff1c2d7ae5603"; 
     const EPAYCO_P_CUST_ID = "1567880";
 
-
-    // --- ======================================================= ---
-    // --- 1. FUNCIONES GLOBALES DEL CARRITO (LOCALSTORAGE) ---
-    // --- ======================================================= ---
-    
+    // Clave para guardar el carrito en localStorage
     const CARRITO_KEY = 'artesolCarrito';
 
     /**
-     * Obtiene el carrito desde localStorage.
-     * @returns {Array} El array del carrito.
+     * Yo obtengo el carrito desde localStorage.
+     * @returns {Array}
      */
     function getCarrito() {
         try {
@@ -32,8 +25,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     /**
-     * Guarda el carrito en localStorage y actualiza el nav.
-     * @param {Array} carrito El array del carrito a guardar.
+     * Yo guardo el carrito en localStorage y actualizo el nav.
+     * @param {Array} carrito
      */
     function saveCarrito(carrito) {
         localStorage.setItem(CARRITO_KEY, JSON.stringify(carrito));
@@ -41,8 +34,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     /**
-     * Añade un producto al carrito.
-     * @param {object} producto El producto a añadir.
+     * Yo añado un producto al carrito.
+     * @param {object} producto
      */
     function anadirAlCarrito(producto) {
         const carrito = getCarrito();
@@ -54,52 +47,37 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
         const productoExistenteIndex = carrito.findIndex(item => item.id === id);
         if (productoExistenteIndex > -1) {
-            // Producto ya existe, actualizar cantidad
             carrito[productoExistenteIndex].cantidad += cantidad;
         } else {
-            // Producto nuevo
             carrito.push({ id, nombre, precio, imagenUrl, cantidad });
         }
         saveCarrito(carrito);
         showToast("¡Producto añadido al carrito!");
     }
 
-    // --- ======================================================= ---
-    // --- 2. FUNCIONES DE AYUDA (HELPERS) ---
-    // --- ======================================================= ---
-
-    /**
-     * Actualiza los indicadores del carrito en el <header>.
-     */
+    // Actualizo la burbuja y total del carrito en el header
     function actualizarNavCarrito() {
-        // Esta función se llama después de cargar el header y cada vez que se actualiza el carrito
         const carrito = getCarrito();
         const cantidadEl = document.getElementById('nav-carrito-cantidad');
         const totalEl = document.getElementById('nav-carrito-total');
 
-        if (!cantidadEl || !totalEl) {
-            // El header aún no se ha cargado, no hacer nada
-            return; 
-        }
+        if (!cantidadEl || !totalEl) return;
 
         const totalUnidades = carrito.reduce((sum, item) => sum + item.cantidad, 0);
         const precioTotal = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
 
-        // Actualizar la burbuja de cantidad
         cantidadEl.textContent = totalUnidades;
-        cantidadEl.classList.toggle('hidden', totalUnidades === 0); // Muestra/oculta
+        cantidadEl.classList.toggle('hidden', totalUnidades === 0);
 
-        // Actualizar el precio total
         totalEl.textContent = `$${precioTotal.toLocaleString('es-CO')}`;
     }
 
-
-    // --- VARIABLES DE ESTADO DE PAGINACIÓN ---
+    // Estado de paginación
     let currentPage = 1;
     let totalPages = 1;
     const PRODUCTS_PER_PAGE = 20;
 
-    // --- Cargar Componentes (Header/Footer) ---
+    // Yo cargo componentes (header/footer) dinámicamente
     const cargarComponente = async (url, elementoId) => {
         try {
             const response = await fetch(url);
@@ -112,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     };
     
-    // --- Helper de Notificaciones ---
+    // Notificaciones rápidas
     function showToast(message) {
         const toast = document.createElement('div');
         toast.className = 'fixed bottom-5 right-5 bg-oscuro text-white py-3 px-5 rounded-lg shadow-lg z-50 transition-opacity duration-300 ease-out opacity-0';
@@ -127,16 +105,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         }, 2500);
     }
 
-    // --- ======================================================= ---
-    // --- 3. DEFINICIÓN DE LÓGICA: TIENDA (tienda.html) ---
-    // --- ======================================================= ---
-    
-    // --- Lógica de Tienda: Cargar Productos (CON PAGINACIÓN) ---
+    // --- Tienda: cargar productos con filtros y paginación ---
     async function cargarProductos(filters = {}, page = 1) {
         const productosGrilla = document.getElementById('productos-grilla');
-        if (!productosGrilla) return; // Salir si no estamos en la página de tienda
+        if (!productosGrilla) return;
 
-        // CORRECCIÓN 1: URL ACTUALIZADA
         let urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos';
         
         const params = new URLSearchParams();
@@ -200,7 +173,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             totalPages = newTotalPages;
             actualizarControlesPaginacion(totalProductos);
 
-            // Añadir listeners a los botones de "Añadir" de la tienda
             document.querySelectorAll('#productos-grilla .btn-add-to-cart').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const btn = event.currentTarget;
@@ -225,7 +197,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    // --- FUNCIÓN: Actualizar botones de paginación ---
+    // Yo actualizo controles de paginación
     function actualizarControlesPaginacion(totalProductos) {
         const paginacionContainer = document.getElementById('paginacion-productos');
         const prevPageBtn = document.getElementById('prev-page-btn');
@@ -243,7 +215,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         nextPageBtn.disabled = (currentPage >= totalPages);
     }
 
-    // --- FUNCIÓN: Obtener filtros actuales ---
+    // Obtengo filtros actuales desde el DOM
     const getCurrentFilters = () => {
         const searchInput = document.getElementById('search-input');
         const categoryFilter = document.getElementById('category-filter');
@@ -263,9 +235,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         );
     };
 
-    // --- Aplicar/Limpiar filtros (resetea a página 1) ---
     const getAndApplyFilters = () => cargarProductos(getCurrentFilters(), 1);
-    
     const clearAllFilters = () => {
         const searchInput = document.getElementById('search-input');
         const categoryFilter = document.getElementById('category-filter');
@@ -279,12 +249,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         getAndApplyFilters();
     };
 
-    // --- Cargar categorías ---
+    // Yo cargo categorías desde el backend
     async function populateCategories(selectedCategory = '') {
         const categoryFilter = document.getElementById('category-filter');
         if (!categoryFilter) return;
         try {
-            // CORRECCIÓN 2: URL ACTUALIZADA
             const response = await fetch('https://proyecto-arte-sol.vercel.app/api/productos/categorias-unicas');
             if (!response.ok) throw new Error('Respuesta no ok del backend');
             const categories = await response.json();
@@ -299,22 +268,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         } catch (error) {
             console.error("Error al poblar las categorías:", error); 
         }
-        
-        
     }
 
-    
-
-    // --- ======================================================= ---
-    // --- 4. DEFINICIÓN DE LÓGICA: INICIO (index.html) ---
-    // --- ======================================================= ---
-    
-    // --- FUNCIÓN PARA CARGAR PRODUCTOS ALEATORIOS EN LA GRILLA ---
+    // --- Inicio: productos destacados, reseñas y posts ---
     async function cargarProductosAleatoriosGrilla() {
         const productosGrilla = document.getElementById('productos-destacados-grilla');
         if (!productosGrilla) return;
-
-        
 
         const urlApi = 'https://proyecto-arte-sol.vercel.app/api/productos/aleatorios?cantidad=4';
         productosGrilla.innerHTML = '<p class="col-span-4 text-center text-gray-600">Cargando productos...</p>';
@@ -340,7 +299,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                     minimumFractionDigits: 0
                 });
 
-                // ESTA ES LA TARJETA DEL INDEX.HTML
                 const productoHtml = `
                 <div class="bg-white border border-suave rounded-2xl shadow-lg overflow-hidden flex flex-col justify-between hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
                     <a href="producto-detalle.html?id=${producto._id}" class="">
@@ -375,7 +333,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 productosGrilla.insertAdjacentHTML('beforeend', productoHtml);
             });
 
-            // AÑADIR LISTENERS A ESTOS BOTONES
             document.querySelectorAll('#productos-destacados-grilla .btn-add-to-cart').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const btn = event.currentTarget;
@@ -396,7 +353,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
     
-    // --- OTRAS FUNCIONES DE INDEX.HTML ---
+    // Inicializo carrusel (si jQuery está presente)
     async function inicializarCarruselHeroe() {
         const heroCarousel = document.getElementById('hero-carousel');
         if (!heroCarousel) return;
@@ -456,10 +413,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }, gifDuracion);
     }
     
-    // --- ======================================================= ---
-    // --- 5. DEFINICIÓN DE LÓGICA: DETALLE (producto-detalle.html) ---
-    // --- ======================================================= ---
-
+    // --- Detalle de producto ---
     async function cargarDetalleProducto() {
         const detalleProductoContainer = document.getElementById('detalle-producto-container');
         if (!detalleProductoContainer) return; 
@@ -485,7 +439,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             const producto = await response.json();
             if (!producto || producto.activo === false) throw new Error("Producto no disponible.");
 
-            // --- RELLENAR LOS CAMPOS ---
+            // Relleno los campos del detalle
             document.title = `${producto.nombre} - Artesol`;
             if (productoImagen) {
                 productoImagen.src = producto.imagenUrl;
@@ -504,7 +458,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
             }
 
-            // --- CONFIGURAR BOTÓN AÑADIR ---
             if (addToCartBtn) {
                 addToCartBtn.addEventListener('click', (event) => {
                     const productoParaCarrito = {
@@ -617,10 +570,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    // --- ======================================================= ---
-    // --- 6. DEFINICIÓN DE LÓGICA: CARRITO (carrito.html) ---
-    // --- ======================================================= ---
-    
+    // --- Carrito: render y eventos ---
     function renderizarCarrito() {
         const carritoLista = document.getElementById('carrito-lista');
         if (!carritoLista) return; 
@@ -730,10 +680,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    // --- ======================================================= ---
-    // --- 7. DEFINICIÓN DE LÓGICA: CHECKOUT (checkout.html) ---
-    // --- ======================================================= ---
-    
+    // --- Checkout: cotizar, integrar ePayco y confirmar ---
     let costoEnvioCache = 0; 
     let tiempoEnvioCache = '...'; 
     let subtotalCache = 0;   
@@ -887,7 +834,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.getElementById('checkout-ciudad').addEventListener('change', cotizarEnvio);
 
         let intentosEspera = 0;
-        const maxIntentos = 50; // Esperar 5 segundos (50 * 100ms)
+        const maxIntentos = 50; // 50 * 100ms = 5s
 
         function esperarEpaycoYActivarBoton() {
             if (typeof ePayco === 'undefined' || typeof ePayco.checkout === 'undefined' || typeof ePayco.checkout.create !== 'function') {
@@ -896,11 +843,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                     console.error("ePayco SDK no cargó después de 5 segundos.");
                     errorMsg.textContent = "Error: No se pudo cargar la pasarela de pago. Por favor, deshabilita tu bloqueador de anuncios (AdBlock) y refresca la página.";
                     
-                    // --- ¡INICIO PLAN B! ---
-                    // ePayco falló. Activar el botón de simulación
+                    // Plan B: simulación de pago
                     finalizarBtn.disabled = false;
                     finalizarBtn.innerHTML = '<i class="fas fa-magic mr-2"></i> Confirmar Pedido (Simulado)';
-                    finalizarBtn.classList.replace('bg-verde-menta', 'bg-gray-500'); // Cambiar color a gris
+                    finalizarBtn.classList.replace('bg-verde-menta', 'bg-gray-500');
                     
                     finalizarBtn.addEventListener('click', (e) => {
                          e.preventDefault();
@@ -914,7 +860,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                              return;
                          }
                          
-                         // Obtener datos del cliente y simular pago
                          const cliente = {
                              nombre: form.elements['nombre'].value,
                              email: form.elements['email'].value,
@@ -927,14 +872,13 @@ document.addEventListener("DOMContentLoaded", async function() {
                          console.warn("MODO SIMULACIÓN: ePayco no cargó. Saltando al generador de guía.");
                          generarGuiaYConfirmar(cliente);
                     });
-                    // --- ¡FIN PLAN B! ---
                     
                     return; 
                 }
                 console.warn("Esperando a ePayco SDK...");
                 setTimeout(esperarEpaycoYActivarBoton, 100);
             } else {
-                // --- PLAN A (ePayco SÍ cargó) ---
+                // ePayco cargó: creo handler y habilito el botón
                 console.log("ePayco SDK cargado. Creando handler...");
                 
                 ePaycoHandler = ePayco.checkout.create({
@@ -955,7 +899,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                                 console.log("Pago APROBADO. Generando guía...");
                                 generarGuiaYConfirmar(cliente);
                                 break;
-                            default: // Rechazada, Pendiente, Fallida o Cerrada
+                            default:
                                 errorMsg.textContent = "El pago no se completó o fue rechazado.";
                                 finalizarBtn.disabled = false;
                                 finalizarBtn.innerHTML = 'Pagar Ahora';
@@ -1008,17 +952,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
         }
 
-        // Iniciar la función "esperadora"
         esperarEpaycoYActivarBoton();
     }
 
-    // --- ======================================================= ---
-    // --- 8. DEFINICIÓN DE LÓGICA: CONFIRMACIÓN (confirmacion.html) ---
-    // --- ======================================================= ---
-
+    // --- Confirmación: muestro número de guía ---
     function inicializarPaginaConfirmacion() {
         const guiaEl = document.getElementById('numero-guia');
-        if (!guiaEl) return; // Salir si no estamos en esta página
+        if (!guiaEl) return;
 
         const guia = localStorage.getItem('artesolUltimaGuia');
 
@@ -1030,11 +970,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    // --- ======================================================= ---
-    // --- 9. DEFINICIÓN DE LÓGICA: OTRAS PÁGINAS (Blog, Contacto, etc.) ---
-    // --- (¡RESTAURADAS!) ---
-    // --- ======================================================= ---
-
+    // --- Reseñas, posts y contacto (otras páginas) ---
     async function cargarResenasAleatorias() { 
         const reseñasGrilla = document.getElementById('reseñas-grilla');
         if (!reseñasGrilla) return; 
@@ -1164,18 +1100,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     }
 
-    // --- ======================================================= ---
-    // --- 10. EJECUCIÓN E INICIALIZACIÓN DE TODAS LAS PÁGINAS ---
-    // --- ======================================================= ---
-
-    // Cargar Header y Footer
+    // --- Inicialización general ---
     await cargarComponente("componentes/header.html", "app-header");
     await cargarComponente("componentes/footer.html", "app-footer");
     
-    // Actualizar el carrito en el Nav (ahora que el header existe)
     actualizarNavCarrito();
 
-    // Lógica Tienda
+    // Lógica tienda
     const productosGrillaElem = document.getElementById('productos-grilla');
     if (productosGrillaElem) {
 
@@ -1184,10 +1115,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         if (toggleFilterBtn && filtrosTienda) {
             toggleFilterBtn.addEventListener('click', () => {
-                // 1. Alternar la clase 'open' que controla la visibilidad en CSS
                 filtrosTienda.classList.toggle('open');
-                
-                // 2. Cambiar el texto del botón dinámicamente
                 const isOpen = filtrosTienda.classList.contains('open');
                 const btnText = toggleFilterBtn.querySelector('span');
                 if (btnText) {
@@ -1219,7 +1147,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             cargarProductos(getCurrentFilters(), initialPage);
         })();
 
-        // --- Event Listeners para FILTROS ---
         const searchButtonElem = document.getElementById('search-button');
         if (searchButtonElem) {
             searchButtonElem.addEventListener('click', getAndApplyFilters);
@@ -1242,7 +1169,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         const categoryFilterElem = document.getElementById('category-filter');
         if (categoryFilterElem) categoryFilterElem.addEventListener('change', getAndApplyFilters); 
 
-        // --- Event Listeners para PAGINACIÓN ---
         const prevPageBtnElem = document.getElementById('prev-page-btn');
         const nextPageBtnElem = document.getElementById('next-page-btn');
         if (prevPageBtnElem) prevPageBtnElem.addEventListener('click', () => {
@@ -1253,7 +1179,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     }
 
-    // Lógica Inicio
+    // Inicio
     const heroCarouselElem = document.getElementById('hero-carousel');
     if (heroCarouselElem) {
         inicializarCarruselHeroe();
@@ -1263,44 +1189,38 @@ document.addEventListener("DOMContentLoaded", async function() {
         inicializarFormularioContacto();
     }
 
-    // Lógica Detalle
+    // Detalle
     const detalleProductoContainerElem = document.getElementById('detalle-producto-container');
     if (detalleProductoContainerElem) {
         cargarDetalleProducto();
     }
 
-    // Lógica Carrito
-    inicializarPaginaCarrito(); // (La función ya tiene su 'if' adentro)
+    // Carrito
+    inicializarPaginaCarrito();
 
-    // Lógica Checkout
-    inicializarPaginaCheckout(); // (La función ya tiene su 'if' adentro)
+    // Checkout
+    inicializarPaginaCheckout();
 
-    // Lógica Confirmación
-    inicializarPaginaConfirmacion(); // (La función ya tiene su 'if' adentro)
+    // Confirmación
+    inicializarPaginaConfirmacion();
 
-    // Lógica para páginas genéricas (Blog, Contacto, Reseñas)
+    // Otras páginas
     const reseñasGrilla = document.getElementById('reseñas-grilla');
-    if (reseñasGrilla && !heroCarouselElem) { // Solo si no es la home
+    if (reseñasGrilla && !heroCarouselElem) {
         cargarResenasAleatorias();
     }
     
     const grillaBlog = document.getElementById('grilla-blog-inicio');
-    if (grillaBlog && !heroCarouselElem) { // Solo si no es la home
+    if (grillaBlog && !heroCarouselElem) {
         cargarPostsAleatorios();
     }
     
     const formularioContacto = document.getElementById('formulario-contacto');
-    if (formularioContacto && !heroCarouselElem) { // Solo si no es la home
+    if (formularioContacto && !heroCarouselElem) {
         inicializarFormularioContacto();
     }
 
-    // --- LÓGICA DEL MENÚ MÓVIL (RESPONSIVE) ---
-    // Esta función se ejecuta después de cargar el header dinámicamente
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    // Como el header se carga con fetch, a veces el botón aún no existe en el DOM inmediato.
-    // Usamos delegación de eventos en el documento para asegurar que funcione.
+    // Menú móvil (delegación para header cargado dinámicamente)
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('#mobile-menu-btn');
         
@@ -1308,7 +1228,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             const menu = document.getElementById('mobile-menu');
             if (menu) {
                 menu.classList.toggle('hidden');
-                // Cambiar icono (Hamburguesa <-> X)
                 const icon = btn.querySelector('i');
                 if (menu.classList.contains('hidden')) {
                     icon.classList.remove('fa-times');
@@ -1319,7 +1238,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
             }
         } else {
-            // Cerrar menú si se hace clic fuera
             const menu = document.getElementById('mobile-menu');
             const isClickInsideMenu = e.target.closest('#mobile-menu');
             
@@ -1333,4 +1251,4 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
 
 
-}); // Cierre del DOMContentLoaded principal
+}); // cierre DOMContentLoaded

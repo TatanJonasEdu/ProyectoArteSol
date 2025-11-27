@@ -10,6 +10,7 @@
 </head>
 <body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased pt-20">
 
+    <!-- Yo renderizo la cabecera -->
     <div id="app-header"></div>
 
     <main class="container mx-auto px-4 py-8">
@@ -21,6 +22,7 @@
             </a>
         </div>
 
+        <!-- Yo muestro mensaje de carga y luego los detalles del producto -->
         <div id="mensaje-container" class="text-center my-12 p-8 bg-white rounded-2xl shadow-xl">
             <p id="mensaje-texto" class="text-lg text-gray-700">
                 <i class="fas fa-spinner fa-spin mr-2"></i>
@@ -28,6 +30,7 @@
             </p>
         </div>
 
+        <!-- Yo muestro el detalle completo del producto (oculto hasta cargar) -->
         <section id="detalle-producto-container" class="hidden bg-white p-8 md:p-12 rounded-2xl shadow-xl">
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -37,7 +40,7 @@
                          src="img/placeholder-producto.png" 
                          alt="Cargando imagen del producto" 
                          class="w-full h-auto rounded-lg shadow-lg object-cover aspect-square">
-                    </div>
+                </div>
 
                 <div class="flex flex-col justify-center">
                     
@@ -69,24 +72,28 @@
                     </div>
 
                 </div>
-            </div> <hr class="my-12 border-gray-200">
+            </div> 
+            <hr class="my-12 border-gray-200">
 
+            <!-- Yo muestro reseñas -->
             <div id="seccion-resenas">
                 <h2 class="text-3xl font-serif-delicado text-rosa-vibrante mb-6">Opiniones de Clientes</h2>
                 <div id="resenas-lista" class="space-y-4">
                     <p class="text-gray-600">No hay reseñas para este producto todavía.</p>
-                    </div>
+                </div>
             </div>
 
+            <!-- Yo muestro productos relacionados -->
             <div id="seccion-relacionados" class="mt-16">
                 <h2 class="text-3xl font-serif-delicado text-rosa-vibrante mb-8 text-center">También te podría interesar</h2>
                 <div id="relacionados-grilla" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    </div>
+                </div>
             </div>
 
         </section>
     </main>
 
+    <!-- Yo renderizo el pie de página -->
     <div id="app-footer"></div>
 
     <script src="js/main.js"></script>

@@ -10,6 +10,7 @@
 </head>
 <body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased">
 
+    <!-- Yo renderizo la cabecera -->
     <div id="app-header"></div>
 
     <main class="container mx-auto px-4 py-8 pt-24">
@@ -27,6 +28,7 @@
     <script src="js/main.js"></script>
 
     <script>
+        // Al cargar la página yo cargo el post.
         document.addEventListener('DOMContentLoaded', () => {
             cargarPostIndividual();
         });
@@ -35,7 +37,7 @@
             const postContenedor = document.getElementById('post-contenido');
 
             try {
-                // 1. Obtener el ID de la URL (ej: post.html?id=12345)
+                // Yo obtengo el id de la URL (post.html?id=...)
                 const params = new URLSearchParams(window.location.search);
                 const postId = params.get('id');
 
@@ -43,7 +45,7 @@
                     throw new Error('No se especificó un ID de post.');
                 }
 
-                // 2. Llamar a la nueva API del backend
+                // Yo llamo a la API para obtener el post
                 const urlApi = `https://proyecto-arte-sol.vercel.app/api/blog/${postId}`;
                 const response = await fetch(urlApi);
 
@@ -53,18 +55,17 @@
 
                 const post = await response.json();
 
-                // 3. "Pintar" el HTML del post
-                
-                // Actualizar el título de la página
+                // Yo actualizo el título de la página
                 document.title = `${post.titulo} - Artesol`;
 
-                // Formatear la fecha
+                // Yo formateo la fecha
                 const fecha = new Date(post.fechaPublicacion).toLocaleDateString('es-CO', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 });
 
+                // Yo genero el HTML del post
                 const postHtml = `
                     <div class="mb-8 text-center">
                         <h1 class="text-4xl lg:text-5xl font-serif-delicado text-rosa-vibrante mb-4 leading-tight">${post.titulo}</h1>
@@ -86,7 +87,7 @@
                     </div>
                 `;
 
-                // 4. Reemplazar el "Cargando..."
+                // Yo reemplazo el mensaje de carga por el contenido
                 postContenedor.innerHTML = postHtml;
 
             } catch (error) {

@@ -9,7 +9,10 @@
 </head>
 <body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased">
 
-    <div id="app-header"></div> <main class="container mx-auto px-4 py-8 pt-24">
+    <!-- Yo renderizo la cabecera -->
+    <div id="app-header"></div>
+
+    <main class="container mx-auto px-4 py-8 pt-24">
         
         <section class="bg-white p-8 md:p-12 rounded-2xl shadow-xl mb-16 max-w-7xl mx-auto">
             <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-8 text-center">Todas las Opiniones de Nuestros Clientes</h1>
@@ -25,61 +28,66 @@
 
     </main>
 
-    <div id="app-footer"></div> <script src="js/main.js"></script> <script>
+    <div id="app-footer"></div>
+
+    <script src="js/main.js"></script>
+
+    <script>
+        // Al cargar la página cargo todas las reseñas.
         document.addEventListener('DOMContentLoaded', () => {
-            cargarTodasLasResenas(); // ¡Llamada a la función renombrada!
+            cargarTodasLasResenas();
         });
 
-        async function cargarTodasLasResenas() { // ¡Función renombrada!
-            const reseñasGrilla = document.getElementById('todas-las-resenas-grilla'); // ¡ID renombrado!
-            const urlApi = 'http://localhost:5000/api/resenas/todas'; // ¡URL con 'resenas'!
+        // Cargo todas las reseñas desde la API y las muestro en la grilla.
+        async function cargarTodasLasResenas() {
+            const resenasGrilla = document.getElementById('todas-las-resenas-grilla');
+            const urlApi = 'http://localhost:5000/api/resenas/todas';
 
-            reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Cargando todas las opiniones...</p>';
+            resenasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Cargando todas las opiniones...</p>';
 
             try {
                 const response = await fetch(urlApi);
-                if (!response.ok) throw new Error('Error al cargar todas las reseñas.');
+                if (!response.ok) throw new Error('Error al cargar las reseñas.');
                 
-                const reseñas = await response.json();
-                
-                reseñasGrilla.innerHTML = ''; 
+                const resenas = await response.json();
+                resenasGrilla.innerHTML = '';
 
-                if (reseñas.length === 0) {
-                    reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Aún no hay opiniones de clientes para mostrar.</p>';
+                if (resenas.length === 0) {
+                    resenasGrilla.innerHTML = '<p class="col-span-3 text-center text-gray-600">Aún no hay opiniones de clientes para mostrar.</p>';
                     return;
                 }
 
-                reseñas.forEach(reseña => {
-                    const estrellasHtml = '<span class="text-yellow-400">★</span>'.repeat(reseña.calificacion) + 
-                                          '<span class="text-gray-300">★</span>'.repeat(5 - reseña.calificacion);
+                resenas.forEach(resena => {
+                    const estrellasHtml = '<span class="text-yellow-400">★</span>'.repeat(resena.calificacion) + 
+                                          '<span class="text-gray-300">★</span>'.repeat(5 - resena.calificacion);
                     
-                    const nombreProducto = reseña.productoId ? reseña.productoId.nombre : 'Producto Desconocido';
-                    const imagenProducto = reseña.productoId ? reseña.productoId.imagenUrl : 'https://via.placeholder.com/60x60?text=Prod';
+                    const nombreProducto = resena.productoId ? resena.productoId.nombre : 'Producto Desconocido';
+                    const imagenProducto = resena.productoId ? resena.productoId.imagenUrl : 'https://via.placeholder.com/60x60?text=Prod';
 
-                    const reseñaHtml = `
+                    const resenaHtml = `
                     <div class="bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col justify-between h-full">
                         <div>
                             <div class="flex items-center mb-3">
                                 <div>
-                                    <p class="font-bold text-oscuro">${reseña.nombreCliente}</p>
+                                    <p class="font-bold text-oscuro">${resena.nombreCliente}</p>
                                     <div class="flex text-lg">${estrellasHtml}</div>
                                 </div>
                             </div>
-                            <p class="text-gray-700 italic mb-4">"${reseña.comentario}"</p>
+                            <p class="text-gray-700 italic mb-4">"${resena.comentario}"</p>
                             <div class="flex items-center text-sm text-gray-600">
                                 <img src="${imagenProducto}" alt="${nombreProducto}" class="w-10 h-10 object-cover rounded-full mr-2">
                                 Comentario sobre: <span class="font-semibold ml-1">${nombreProducto}</span>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-500 mt-4 text-right">${new Date(reseña.fechaResena).toLocaleDateString('es-CO')}</p>
+                        <p class="text-sm text-gray-500 mt-4 text-right">${new Date(resena.fechaResena).toLocaleDateString('es-CO')}</p>
                     </div>
                     `;
-                    reseñasGrilla.insertAdjacentHTML('beforeend', reseñaHtml);
+                    resenasGrilla.insertAdjacentHTML('beforeend', resenaHtml);
                 });
 
             } catch (error) {
-                console.error('Error al cargar todas las reseñas:', error);
-                reseñasGrilla.innerHTML = '<p class="col-span-3 text-center text-red-500">Error al cargar opiniones. Intenta de nuevo más tarde.</p>';
+                console.error('Error al cargar reseñas:', error);
+                resenasGrilla.innerHTML = '<p class="col-span-3 text-center text-red-500">Error al cargar opiniones. Intenta de nuevo más tarde.</p>';
             }
         }
     </script>

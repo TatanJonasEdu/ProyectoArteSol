@@ -17,7 +17,7 @@
             overflow: hidden;
         }
         #filtros-tienda.open {
-            max-height: 1000px; /* Un valor lo suficientemente grande */
+            max-height: 1000px;
             opacity: 1;
             visibility: visible;
         }
@@ -25,6 +25,7 @@
 </head>
 <body class="bg-principal-rosa text-oscuro font-sans-legible leading-relaxed antialiased pt-20">
 
+    <!-- Yo renderizo la cabecera -->
     <div id="app-header"></div>
 
     <main class="container mx-auto px-4 py-8">
@@ -37,16 +38,13 @@
                 </button>
             </div>
 
+            <!-- Yo muestro filtros (colapsable) -->
             <div id="filtros-tienda">
-                
-                <!-- SECCIÓN DE FILTROS REORGANIZADA -->
                 <aside class="bg-white p-6 md:p-8 rounded-2xl shadow-xl"> 
                     <h1 class="text-4xl font-serif-delicado text-rosa-vibrante mb-8 text-center">¿Algo especial o personalizado?</h1>
                     
-                    <!-- Contenedor principal cambiado a flex-col -->
                     <div class="flex flex-col gap-6">
                         
-                        <!-- 1. Barra de Búsqueda (Arriba y más ancha) -->
                         <div class="w-full max-w-2xl mx-auto">
                             <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Buscar por texto:</label>
                             <div class="flex">
@@ -67,7 +65,6 @@
                             </div>
                         </div>
 
-                        <!-- 2. Otros Filtros (Categoría y Precio) en una grilla separada -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end w-full">
                             <div class="w-full">
                                 <label for="category-filter" class="block text-gray-700 text-sm font-bold mb-2">Categoría:</label>
@@ -88,7 +85,6 @@
                             </div>
                         </div>
 
-                        <!-- 3. Botones (En su propia fila, centrados) -->
                         <div class="w-full flex flex-col sm:flex-row gap-3 justify-center pt-6 border-t border-gray-200">
                             <button 
                                 type="button" 
@@ -108,8 +104,6 @@
 
                     </div>
                 </aside>
-                <!-- FIN DE LA SECCIÓN REORGANIZADA -->
-
             </div>
         </section>
         
@@ -120,6 +114,7 @@
                 Descubre la belleza y calidad de cada pieza hecha a mano con amor y dedicación.
             </p>
 
+            <!-- Yo muestro la grilla de productos -->
             <div id="productos-grilla" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 <p class="col-span-full text-center text-gray-600">Cargando productos...</p>
             </div>
@@ -128,7 +123,7 @@
                 <p class="text-gray-600">¡Explora todas nuestras creaciones únicas!</p>
             </div>
 
-            <!-- SECCIÓN DE PAGINACIÓN -->
+            <!-- Yo muestro paginación -->
             <div id="paginacion-productos" class="flex justify-center items-center space-x-4 mt-12">
                 <button 
                     id="prev-page-btn" 
@@ -153,6 +148,7 @@
         </section>
     </main>
 
+    <!-- Yo renderizo el pie de página -->
     <div id="app-footer"></div>
 
     <script src="js/main.js"></script>
