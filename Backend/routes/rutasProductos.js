@@ -1,47 +1,26 @@
-// backend/routes/rutasProductos.js
 const express = require('express');
 const router = express.Router();
 const productoController = require('../controllers/producto.controller');
 
-// --- Rutas de Productos ---
-
-// 1. Ruta para obtener las CATEGORÍAS ÚNICAS (DEBE IR ANTES DE /:id)
-// GET -> http://localhost:5000/api/productos/categorias-unicas
+// Yo obtengo categorías únicas (debe ir antes de /:id)
 router.get('/categorias-unicas', productoController.obtenerCategoriasUnicas);
 
-
-// --- NUEVA RUTA PARA PRODUCTOS ALEATORIOS ---
-// GET -> http://localhost:5000/api/productos/aleatorios
+// Yo obtengo productos aleatorios
 router.get('/aleatorios', productoController.obtenerProductosAleatorios);
 
+// Yo obtengo un producto por ID
+router.get('/:id', productoController.obtenerProductoPorId);
 
-// 2. Ruta para obtener un PRODUCTO ESPECÍFICO por ID
-// GET -> http://localhost:5000/api/productos/:id
-router.get('/:id', productoController.obtenerProductoPorId); 
-
-
-
-// 3. Ruta para OBTENER TODOS los productos (con filtros opcionales de búsqueda, categoría y precio)
-// GET -> http://localhost:5000/api/productos
+// Yo obtengo productos (con filtros opcionales)
 router.get('/', productoController.obtenerProductos);
 
-// 4. Ruta para CREAR un nuevo producto
-// POST -> http://localhost:5000/api/productos
+// Yo creo un nuevo producto
 router.post('/', productoController.crearProducto);
 
-// 5. Ruta para ACTUALIZAR un producto existente por ID
-// PUT -> http://localhost:5000/api/productos/:id
+// Yo actualizo un producto por ID
 router.put('/:id', productoController.actualizarProducto);
 
-// 6. Ruta para ELIMINAR un producto por ID
-// DELETE -> http://localhost:5000/api/productos/:id
+// Yo elimino un producto por ID
 router.delete('/:id', productoController.eliminarProducto);
-
-// 7. Ruta para CREAR VARIOS PRODUCTOS (si tienes el controlador para ello)
-// POST -> http://localhost:5000/api/productos/varios
-// Asegúrate de tener 'exports.crearVariosProductos' en tu producto.controller.js
-router.post('/varios', productoController.crearVariosProductos);
-
-
 
 module.exports = router;

@@ -1,51 +1,45 @@
-//index.js
+// Importo dependencias
 const express = require('express');
-const conectarBD = require('../config/db')
+const conectarBD = require('../config/db');
 const cors = require('cors');
 const path = require('path');
 
-
-//creamos la variable app
+// Creo la app y defino el puerto
 const app = express();
 const port = process.env.PORT || 5000;
 
-//conexion bases de datos
+// Conecto la base de datos
 conectarBD();
-app.use(cors());
+
+// Middlewares
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../img', 'frontend')));
 
-// CORRECCIÓN DE CORS: Permitir cualquier origen (*) o específicamente el tuyo
+// Configuro CORS (para desarrollo permito cualquier origen)
 app.use(cors({
-    origin: '*', // OJO: Para producción es mejor poner tu dominio real, pero para probar usa '*'
+    origin: '*', // En producción pongo mi dominio
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-//ruta para consumir la api cliente
-
-
+// Registro rutas de la API
 app.use('/api/productos', require('../routes/rutasProductos'));
 app.use('/api/blog', require('../routes/rutasBlog'));
 app.use('/api/contacto', require('../routes/rutasContacto'));
 app.use('/api/resenas', require('../routes/rutasResenas'));
 app.use('/api/envio', require('../routes/rutasEnvio'));
 
-
-
-
-//ruta para verificar nuestro servidor en la web
-app.get('/', (req,res) =>{
-    res.send('hola estamos conectados desde la web')
+// Ruta raíz para verificación rápida
+app.get('/', (req, res) => {
+    res.send('hola estamos conectados desde la web');
 });
 
-
-// Modificación para Vercel:
+// Inicio el servidor en desarrollo
 if (process.env.NODE_ENV !== 'production') {
-    const port = process.env.PORT || 5000;
     app.listen(port, () => {
         console.log(`El servidor está conectado http://localhost:${port}`);
     });
 }
 
-module.exports = app; // ¡Esto es lo más importante!
+// Exporto la app (necesario para despliegue en plataformas como Vercel)
+module.exports = app;

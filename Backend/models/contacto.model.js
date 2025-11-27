@@ -11,8 +11,8 @@ const ContactoSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        lowercase: true, // Guarda el email en minúsculas
-        match: [/^\S+@\S+\.\S+$/, 'Por favor, usa un formato de email válido'] // Validación de email
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, 'Por favor, usa un formato de email válido']
     },
     mensaje: {
         type: String,
@@ -22,7 +22,7 @@ const ContactoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    leido: { // Para saber si Solanyi ya vio el mensaje
+    leido: {
         type: Boolean,
         default: false
     }

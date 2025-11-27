@@ -1,8 +1,11 @@
 // backend/controllers/resena.controller.js
-const Resena = require('../models/resena.model'); // Importa el modelo Resena
-const Producto = require('../models/producto.model'); // Necesitamos el modelo Producto
+const Resena = require('../models/resena.model');
+const Producto = require('../models/producto.model');
+const mongoose = require('mongoose');
 
-// --- CREAR UNA NUEVA RESENA ---
+/**
+ * Yo creo una nueva reseña
+ */
 exports.crearResena = async (req, res) => {
     try {
         const { productoId, clienteId, nombreCliente, calificacion, comentario } = req.body;
@@ -24,7 +27,7 @@ exports.crearResena = async (req, res) => {
 
         await nuevaResena.save();
 
-        // Opcional: Actualizar la calificación promedio en el modelo de Producto
+        // Yo actualizo la calificación promedio del producto
         await exports.actualizarCalificacionProducto(productoId);
 
         res.status(201).json({ msg: 'Reseña enviada con éxito.', resena: nuevaResena });
@@ -35,12 +38,14 @@ exports.crearResena = async (req, res) => {
     }
 };
 
-// --- OBTENER RESENAS POR ID DE PRODUCTO ---
+/**
+ * Yo obtengo reseñas por ID de producto
+ */
 exports.obtenerResenasPorProducto = async (req, res) => {
     try {
-        const { id } = req.params; // ID del producto
+        const { id } = req.params;
         const resenas = await Resena.find({ productoId: id })
-                                  .sort({ fechaResena: -1 }); // Las más nuevas primero
+                                  .sort({ fechaResena: -1 });
         res.status(200).json(resenas);
     } catch (error) {
         console.error("Error al obtener reseñas por producto:", error);
@@ -48,13 +53,15 @@ exports.obtenerResenasPorProducto = async (req, res) => {
     }
 };
 
-// --- OBTENER RESENAS ALEATORIAS (para el index.html) ---
+/**
+ * Yo obtengo reseñas aleatorias (para la página de inicio)
+ */
 exports.obtenerResenasAleatorias = async (req, res) => {
     try {
-        const cantidad = parseInt(req.query.cantidad) || 3; // Por defecto, 3 reseñas
+        const cantidad = parseInt(req.query.cantidad) || 3;
 
         const resenasAleatorias = await Resena.aggregate([
-            { $match: { comentario: { $ne: null, $ne: '' } } }, // Solo reseñas con comentario
+            { $match: { comentario: { $ne: null, $ne: '' } } },
             { $sample: { size: cantidad } }
         ]);
 
@@ -66,12 +73,14 @@ exports.obtenerResenasAleatorias = async (req, res) => {
     }
 };
 
-// --- OBTENER TODAS LAS RESENAS (para la página de "Ver Más Opiniones") ---
+/**
+ * Yo obtengo todas las reseñas
+ */
 exports.obtenerTodasLasResenas = async (req, res) => {
     try {
         const resenas = await Resena.find()
-                                  .populate('productoId', 'nombre imagenUrl') // Opcional: obtener nombre e imagen del producto
-                                  .sort({ fechaResena: -1 }); // Las más nuevas primero
+                                  .populate('productoId', 'nombre imagenUrl')
+                                  .sort({ fechaResena: -1 });
         res.status(200).json(resenas);
     } catch (error) {
         console.error("Error al obtener todas las reseñas:", error);
@@ -79,16 +88,18 @@ exports.obtenerTodasLasResenas = async (req, res) => {
     }
 };
 
-// --- FUNCIÓN INTERNA PARA ACTUALIZAR CALIFICACIÓN PROMEDIO EN EL PRODUCTO ---
+/**
+ * Yo actualizo la calificación promedio del producto
+ */
 exports.actualizarCalificacionProducto = async (productoId) => {
     try {
-        const resultadoAgregacion = await Resena.aggregate([ // Agrega desde el modelo Resena
+        const resultadoAgregacion = await Resena.aggregate([
             { $match: { productoId: new mongoose.Types.ObjectId(productoId) } },
             {
                 $group: {
                     _id: '$productoId',
                     promedioCalificacion: { $avg: '$calificacion' },
-                    totalResenas: { $sum: 1 } // totalResenas, no totalReseñas
+                    totalResenas: { $sum: 1 }
                 }
             }
         ]);
@@ -96,11 +107,10 @@ exports.actualizarCalificacionProducto = async (productoId) => {
         if (resultadoAgregacion.length > 0) {
             const { promedioCalificacion, totalResenas } = resultadoAgregacion[0];
             await Producto.findByIdAndUpdate(productoId, {
-                calificacionPromedio: promedioCalificacion, // Campo sin "ñ"
-                totalResenas: totalResenas // Campo sin "ñ"
+                calificacionPromedio: promedioCalificacion,
+                totalResenas: totalResenas
             }, { new: true });
         } else {
-            // Si no hay reseñas, resetear la calificación
             await Producto.findByIdAndUpdate(productoId, {
                 calificacionPromedio: 0,
                 totalResenas: 0

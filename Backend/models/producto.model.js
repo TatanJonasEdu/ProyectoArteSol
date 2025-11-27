@@ -1,12 +1,11 @@
-//producto.model.js
+// producto.model.js
 const mongoose = require('mongoose');
 
-// Definimos el Esquema (Schema) del Producto
 const ProductoSchema = new mongoose.Schema({
     nombre: {
         type: String,
-        required: true, // El nombre es obligatorio
-        trim: true      // Limpia espacios en blanco
+        required: true,
+        trim: true
     },
     descripcion: {
         type: String,
@@ -15,44 +14,52 @@ const ProductoSchema = new mongoose.Schema({
     precio: {
         type: Number,
         required: true,
-        min: 0          // El precio no puede ser negativo
+        min: 0
     },
     imagenUrl: {
         type: String,
-        required: true  // Usaremos un placeholder por ahora
+        required: true
     },
     
     categoria: {
-    type: String,
-    required: true,
-    trim: true,
-    enum: [ // ¡Aquí está tu lista de categorías permitidas!
-        'Accesorios', 
-        'Amigurumis', 
-        'Bolsos', 
-        'Bufandas', 
-        'Gorros', // ¡Añadir esta!
-        'Mantas', // ¡Añadir esta!
-        'Chales', // ¡Añadir esta!
-        'Decoración', // ¡Añadir esta!
-        'Ropa', // ¡Añadir esta!
-        'Guantes' // ¡Añadir esta!
-        // ... otras categorías que ya tengas o quieras añadir
-    ]
+        type: String,
+        required: true,
+        trim: true,
+        enum: [
+            'Accesorios', 
+            'Amigurumis', 
+            'Bolsos', 
+            'Bufandas', 
+            'Gorros',
+            'Mantas',
+            'Chales',
+            'Decoración',
+            'Ropa',
+            'Guantes'
+        ]
     },
 
     stock: {
         type: Number,
-        default: 1      // Si no se especifica, hay 1 en stock
+        default: 1
     },
     fechaCreacion: {
         type: Date,
-        default: Date.now // La fecha se pone automáticamente
+        default: Date.now
     },
-    calificacionPromedio: { type: Number, default: 0 },
-    totalResenas: { type: Number, default: 0 }
+    calificacionPromedio: {
+        type: Number,
+        default: 0
+    },
+    totalResenas: {
+        type: Number,
+        default: 0
+    },
+    activo: {
+        type: Boolean,
+        default: true
+    }
 });
 
-// Exportamos el modelo para que el controlador pueda usarlo
-// mongoose.model('NombreDelModelo', Esquema)
+// Yo exporto el modelo
 module.exports = mongoose.model('Producto', ProductoSchema);

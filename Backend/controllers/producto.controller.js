@@ -2,20 +2,19 @@
 // backend/controllers/producto.controller.js
 const Producto = require('../models/producto.model');
 
-// Controlador para obtener todos los productos (CON PAGINACIÓN) o filtrar
+/**
+ * Yo obtengo todos los productos con paginación y filtros
+ */
 exports.obtenerProductos = async (req, res) => {
     try {
-        // 1. Obtener parámetros de filtro y paginación
         const { search, category, minPrice, maxPrice } = req.query;
         
-        // Parámetros de paginación con valores por defecto
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 20; // Límite de 20 productos como pediste
+        const limit = parseInt(req.query.limit) || 20;
         const skip = (page - 1) * limit;
 
         let query = { activo: true };
 
-        // 2. Construir la consulta de filtro (esto es igual a tu código original)
         if (search) {
             query.$or = [
                 { nombre: { $regex: search, $options: 'i' } },
@@ -30,28 +29,18 @@ exports.obtenerProductos = async (req, res) => {
 
         if (minPrice || maxPrice) {
             query.precio = {};
-            if (minPrice) {
-                query.precio.$gte = parseFloat(minPrice);
-            }
-            if (maxPrice) {
-                query.precio.$lte = parseFloat(maxPrice);
-            }
+            if (minPrice) query.precio.$gte = parseFloat(minPrice);
+            if (maxPrice) query.precio.$lte = parseFloat(maxPrice);
         }
 
-        // 3. Ejecutar las consultas
-        // Primero, contamos el total de documentos que coinciden con el filtro (para saber el total de páginas)
         const totalProductos = await Producto.countDocuments(query);
-
-        // Segundo, obtenemos los productos para la página actual
         const productos = await Producto.find(query)
-            .sort({ fechaCreacion: -1 }) // Mantenemos el orden
-            .skip(skip)                 // Saltamos los de páginas anteriores
-            .limit(limit);              // Limitamos al número de esta página
+            .sort({ fechaCreacion: -1 })
+            .skip(skip)
+            .limit(limit);
 
-        // 4. Calcular el total de páginas
         const totalPages = Math.ceil(totalProductos / limit);
 
-        // 5. Enviar la respuesta estructurada
         res.status(200).json({
             productos,
             totalProductos,
@@ -65,7 +54,9 @@ exports.obtenerProductos = async (req, res) => {
     }
 };
 
-// Controlador para obtener categorías únicas
+/**
+ * Yo obtengo categorías únicas
+ */
 exports.obtenerCategoriasUnicas = async (req, res) => {
     try {
         const categorias = await Producto.distinct('categoria', { activo: true });
@@ -76,7 +67,9 @@ exports.obtenerCategoriasUnicas = async (req, res) => {
     }
 };
 
-// Controlador para crear un nuevo producto
+/**
+ * Yo creo un nuevo producto
+ */
 exports.crearProducto = async (req, res) => {
     try {
         const nuevoProducto = new Producto(req.body);
@@ -88,7 +81,9 @@ exports.crearProducto = async (req, res) => {
     }
 };
 
-// Controlador para obtener un producto por su ID
+/**
+ * Yo obtengo un producto por su ID
+ */
 exports.obtenerProductoPorId = async (req, res) => {
     try {
         const producto = await Producto.findById(req.params.id);
@@ -102,7 +97,9 @@ exports.obtenerProductoPorId = async (req, res) => {
     }
 };
 
-// Controlador para actualizar un producto por su ID
+/**
+ * Yo actualizo un producto por su ID
+ */
 exports.actualizarProducto = async (req, res) => {
     try {
         const producto = await Producto.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -116,7 +113,9 @@ exports.actualizarProducto = async (req, res) => {
     }
 };
 
-// Controlador para eliminar un producto por su ID
+/**
+ * Yo elimino un producto por su ID
+ */
 exports.eliminarProducto = async (req, res) => {
     try {
         const producto = await Producto.findByIdAndDelete(req.params.id);
@@ -130,10 +129,12 @@ exports.eliminarProducto = async (req, res) => {
     }
 };
 
-// Controlador para crear varios productos (si esta ruta está activa)
+/**
+ * Yo creo varios productos a la vez
+ */
 exports.crearVariosProductos = async (req, res) => {
     try {
-        const productosData = req.body; // Se espera un array de objetos producto
+        const productosData = req.body;
         if (!Array.isArray(productosData)) {
             return res.status(400).json({ msg: 'El cuerpo de la solicitud debe ser un array de productos.' });
         }
@@ -145,19 +146,16 @@ exports.crearVariosProductos = async (req, res) => {
     }
 };
 
-// --- NUEVA FUNCIÓN PARA OBTENER PRODUCTOS ALEATORIOS ---
+/**
+ * Yo obtengo productos aleatorios
+ */
 exports.obtenerProductosAleatorios = async (req, res) => {
     try {
-        // Obtenemos la cantidad de la URL, o usamos 4 por defecto
         const cantidad = parseInt(req.query.cantidad) || 4;
-
-        // Usamos $sample para obtener 'cantidad' documentos aleatorios
-        // Solo seleccionamos productos que estén 'activos'
         const productos = await Producto.aggregate([
             { $match: { activo: true } },
             { $sample: { size: cantidad } }
         ]);
-
         res.status(200).json(productos);
     } catch (error) {
         console.error("Error al obtener productos aleatorios:", error);

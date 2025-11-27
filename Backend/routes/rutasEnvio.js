@@ -1,9 +1,7 @@
-//rutasEnvio.js
 const express = require('express');
 const router = express.Router();
 
-// --- 1. BASE DE DATOS FALSA DE CAPITALES ---
-// (tiempo en días hábiles)
+// Base de datos falsa de capitales (tiempo en días hábiles)
 const costosCapitales = new Map();
 costosCapitales.set('bogota', { costo: 8500, tiempo: 2 });
 costosCapitales.set('medellin', { costo: 12500, tiempo: 3 });
@@ -22,20 +20,19 @@ costosCapitales.set('santa marta', { costo: 14500, tiempo: 4 });
 costosCapitales.set('monteria', { costo: 14000, tiempo: 4 });
 
 /**
- * Función para normalizar texto:
- * "Bogotá D.C." -> "bogota dc"
+ * Yo normalizo texto: "Bogotá D.C." -> "bogota dc"
  */
 function normalizarTexto(texto) {
     if (!texto) return '';
     return texto
         .toLowerCase()
-        .normalize("NFD") // Quita acentos
+        .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .trim();
 }
 
 /**
- * RUTA FALSA DE COTIZACIÓN DE ENVÍO (MEJORADA)
+ * Yo cotizo el envío según la ciudad
  * POST /api/envio/cotizar
  */
 router.post('/cotizar', (req, res) => {
@@ -48,54 +45,45 @@ router.post('/cotizar', (req, res) => {
         const ciudadNormalizada = normalizarTexto(ciudad);
 
         let costoEnvio;
-        let tiempoEntrega;
         let tiempoDias;
 
-        // 2. Buscar en la lista de capitales
         if (costosCapitales.has(ciudadNormalizada)) {
             const data = costosCapitales.get(ciudadNormalizada);
             costoEnvio = data.costo;
             tiempoDias = data.tiempo;
-            console.log(`[Simulador] Cotización para Capital: ${ciudad}`);
+            console.log(`[Cotización] Capital: ${ciudad}`);
 
         } else {
-            // 3. Simular para "cualquier otro municipio"
-            console.log(`[Simulador] Cotización para Municipio: ${ciudad}`);
+            console.log(`[Cotización] Municipio: ${ciudad}`);
 
-            // Algoritmo de simulación simple (basado en la longitud del nombre)
+            // Yo simulo costo basado en hash del nombre
             let hash = 0;
             for (let i = 0; i < ciudadNormalizada.length; i++) {
                 hash += ciudadNormalizada.charCodeAt(i);
             }
             
-            // Costo entre 14.000 y 25.000
             costoEnvio = 14000 + (hash % 11000); 
-            costoEnvio = Math.round(costoEnvio / 100) * 100; // Redondear a 100s
-
-            // Simular tiempo (Entre 4 y 8 días)
+            costoEnvio = Math.round(costoEnvio / 100) * 100;
             tiempoDias = 4 + (hash % 5);
         }
 
-        // 4. Crear rango de tiempo (ej. "2-4 días")
-        tiempoEntrega = `${tiempoDias} a ${tiempoDias + 2} días hábiles`;
+        const tiempoEntrega = `${tiempoDias} a ${tiempoDias + 2} días hábiles`;
 
-        // 5. Simular demora y responder
         setTimeout(() => {
             res.status(200).json({ 
                 ciudad: ciudad,
                 costoEnvio: costoEnvio,
                 tiempoEntrega: tiempoEntrega
             });
-        }, 750); // Una demora para que parezca real
+        }, 750);
 
     } catch (error) {
         res.status(500).json({ msg: 'Error al cotizar el envío.' });
     }
 });
 
-
 /**
- * RUTA FALSA DE GENERACIÓN DE GUÍA
+ * Yo genero la guía de envío
  * POST /api/envio/generar
  */
 router.post('/generar', (req, res) => {
@@ -106,13 +94,13 @@ router.post('/generar', (req, res) => {
             return res.status(400).json({ msg: 'Faltan datos para generar la guía.' });
         }
 
-        console.log('--- [Simulador] Nuevo Pedido Recibido ---');
+        console.log('--- [Nuevo Pedido] ---');
         console.log('Cliente:', cliente.nombre);
         console.log('Dirección:', cliente.direccion, cliente.ciudad);
         console.log('Envío:', `$${costoEnvio} (${tiempoEntrega})`);
         console.log('Productos:', carrito.map(p => `${p.nombre} (x${p.cantidad})`).join(', '));
 
-        // Generar un número de guía falso
+        // Yo genero número de guía
         const numeroGuia = `ARTESOL-${Date.now().toString().slice(-6)}`;
 
         setTimeout(() => {
