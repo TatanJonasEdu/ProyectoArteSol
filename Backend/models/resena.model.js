@@ -4,20 +4,20 @@ const mongoose = require('mongoose');
 const ResenaSchema = new mongoose.Schema({
     productoId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Producto',
+        ref: 'Producto', // Debe coincidir con el nombre de tu modelo Producto
         required: true
     },
     clienteId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Cliente',
-        required: false
+        ref: 'Cliente', // Debe coincidir con el nombre de tu modelo Cliente (si existe)
+        required: false // Puede ser anónimo o para futuras implementaciones de login
     },
-    nombreCliente: {
+    nombreCliente: { // Para mostrar en la reseña
         type: String,
         required: true,
         trim: true
     },
-    calificacion: {
+    calificacion: { // Estrellas de 1 a 5
         type: Number,
         required: true,
         min: 1,
@@ -28,10 +28,15 @@ const ResenaSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    fechaResena: {
+    fechaResena: { // Campo de fecha sin "ñ"
         type: Date,
         default: Date.now
     }
+    // Si quieres una foto para el cliente de la reseña:
+    // fotoClienteUrl: {
+    //     type: String,
+    //     default: '/img/clientes/default.jpg' 
+    // }
 });
 
-module.exports = mongoose.model('Resena', ResenaSchema);
+module.exports = mongoose.model('Resena', ResenaSchema); // Nombre del modelo: Resena

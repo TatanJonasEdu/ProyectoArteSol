@@ -7,19 +7,19 @@ const BlogSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    contenido: {
+    contenido: { // Este será el texto largo del blog
         type: String,
         required: true
     },
     autor: {
         type: String,
-        default: 'Solanyi Echeverry'
+        default: 'Solanyi Echeverry' // Ponemos un autor por defecto
     },
-    bannerUrl: {
+    bannerUrl: { // La imagen principal del post
         type: String,
         required: true
     },
-    fechaPublicacion: {
+    fechaPublicacion: { // Usaremos esto para simular las fechas pasadas
         type: Date,
         default: Date.now
     }
