@@ -18,7 +18,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-            <!-- Columna Izquierda: Items del Carrito -->
+            <!-- Aquí muestro los items del carrito -->
             <section class="lg:col-span-2 bg-white p-6 md:p-8 rounded-2xl shadow-xl">
                 
                 <div class="hidden md:grid grid-cols-5 gap-4 border-b border-gray-200 pb-4 mb-4 font-semibold text-gray-600">
@@ -28,18 +28,18 @@
                     <div class="text-right">Total</div>
                 </div>
 
-                <!-- Contenedor para la lista de items (manejado por JS) -->
+                <!-- Aquí inserto la lista del carrito (renderizada por JS) -->
                 <div id="carrito-lista">
-                    <!-- Mensaje inicial de carga/vacío -->
+                    <!-- Mensaje de carga/vacío -->
                     <p id="carrito-mensaje" class="text-center text-gray-600 py-12 text-lg">
                         <i class="fas fa-spinner fa-spin mr-2"></i>
                         Cargando tu carrito...
                     </p>
                     
-                    <!-- JS generará aquí las filas de productos -->
+                    <!-- JS inserta las filas de productos aquí -->
                 </div>
 
-                <!-- Acciones del Carrito -->
+                <!-- Acciones del carrito -->
                 <div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
                     <a href="tienda.html" class="text-secundario-botones hover:underline transition-colors duration-300 font-semibold">
                         <i class="fas fa-arrow-left mr-2"></i>
@@ -53,7 +53,7 @@
 
             </section>
 
-            <!-- Columna Derecha: Resumen del Pedido -->
+            <!-- Resumen del pedido -->
             <aside class="lg:col-span-1 bg-white p-6 md:p-8 rounded-2xl shadow-xl sticky top-28">
                 <h2 class="text-3xl font-serif-delicado text-oscuro mb-6 pb-4 border-b border-gray-200">
                     Resumen del Pedido

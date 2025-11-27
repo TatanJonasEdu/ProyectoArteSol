@@ -44,7 +44,7 @@
                 }
 
                 // 2. Llamar a la nueva API del backend
-                const urlApi = `http://localhost:5000/api/blog/${postId}`;
+                const urlApi = `https://proyecto-arte-sol.vercel.app/api/blog/${postId}`;
                 const response = await fetch(urlApi);
 
                 if (!response.ok) {
